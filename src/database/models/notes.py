@@ -9,7 +9,8 @@ class Notes(Base):
 
     id = Column(BIGINT(unsigned=True), primary_key=True)
     user_id = Column(BIGINT(unsigned=True),
-                     ForeignKey('users.id'))
+                     ForeignKey('users.id'),
+                     nullable=False)
     title = Column(String(255), nullable=True,
                    index=True, unique=False)
     body = Column(Text, nullable=False,
