@@ -8,3 +8,7 @@ async def connect_to_db(app: FastAPI) -> None:
     database = Database(mysql_connection_string_for_app())
     await database.connect()
     app.state.db = database
+
+
+async def close_db_connection(app: FastAPI) -> None:
+    await app.state.db.disconnect()
