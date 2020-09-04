@@ -1,14 +1,24 @@
+from typing import Callable
+
 from databases import Database
 from fastapi import FastAPI
 
 from resources import mysql_connection_string
 
 
-async def connect_to_db(app: FastAPI) -> None:
-    database = Database(mysql_connection_string())
-    await database.connect()
-    app.state.db = database
+def connect_to_db(app: FastAPI) -> Callable:
+
+    async def start_app() -> None:
+        database = Database(mysql_connection_string())
+        app.state.db = database
+        await database.connect()
+
+    return start_app
 
 
-async def close_db_connection(app: FastAPI) -> None:
-    await app.state.db.disconnect()
+def close_db_connection(app: FastAPI) -> Callable:
+
+    async def stop_app() -> None:
+        await app.state.db.disconnect()
+
+    return stop_app
