@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 
 def mysql_connection_string_for_app() -> str:
+    load_dotenv()
     return "mysql://{}:{}@{}:{}/{}".format(
         getenv("MYSQL_USER"),
         getenv("MYSQL_PASSWORD"),
@@ -14,6 +15,7 @@ def mysql_connection_string_for_app() -> str:
 
 
 def mysql_connection_string_for_alembic() -> str:
+    load_dotenv()
     return "mysql+pymysql://{}:{}@{}:{}/{}".format(
         getenv("MYSQL_USER"),
         getenv("MYSQL_PASSWORD"),
