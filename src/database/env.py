@@ -8,7 +8,7 @@ from alembic import context
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from resources import mysql_connection_string_for_alembic
+from resources import mysql_connection_string
 from database.models import Base
 
 
@@ -32,7 +32,7 @@ target_metadata = Base.metadata
 # ... etc.
 config.set_main_option(
     "sqlalchemy.url",
-    mysql_connection_string_for_alembic()
+    mysql_connection_string(enable_driver=True)
     )
 
 

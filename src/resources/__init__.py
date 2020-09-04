@@ -1,2 +1,1 @@
-from .mysql_connection_string import mysql_connection_string_for_app
-from .mysql_connection_string import mysql_connection_string_for_alembic
+from .mysql_connection_string import mysql_connection_string
