@@ -9,7 +9,7 @@ from alembic import context
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from resources import mysql_connection_string_for_alembic
-from .models import Base
+from database.models import Base
 
 
 # this is the Alembic Config object, which provides
