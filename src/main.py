@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from database import connect_to_db, close_db_connection
+from routers import authentication
 
 
 def get_application() -> FastAPI:
@@ -15,6 +16,9 @@ def get_application() -> FastAPI:
     )
     application.add_event_handler("startup", connect_to_db(application))
     application.add_event_handler("shutdown", close_db_connection(application))
+
+    application.include_router(authentication.router)
+
     return application
 
 app = get_application()
