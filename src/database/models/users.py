@@ -13,7 +13,7 @@ class Users(Base):
                       index=True, unique=True)
     email = Column(String(255), nullable=False,
                    index=True, unique=True)
-    password_hash = Column(String(255), nullable=False)
+    password_hash = Column(String(255), nullable=False, unique=False)
 
     created_at = Column(TIMESTAMP, server_default=func.now(),
-                                   nullable=False, index=True)
+                        nullable=False, index=True)
