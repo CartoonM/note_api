@@ -13,12 +13,13 @@ class UserRepository(BaseRepository):
 
     async def create_user(self, user_create: UserInCreate) -> None:
         try:
+            password_hash = await security.get_password_hash(
+                                            user_create.password)
             await self.database.execute(
                 insert(Users).values(
                     username=user_create.username,
                     email=user_create.email,
-                    password_hash=security.get_password_hash(
-                                        user_create.password)))
+                    password_hash=password_hash))
         except IntegrityError:
             logger.warning('User already exist')
             raise EntityAlreadyExist
@@ -29,7 +30,7 @@ class UserRepository(BaseRepository):
         if user is None:
             logger.warning('User does not exist')
             raise EntityDoesNotExist
-        if not security.verify_password(
+        if not await security.verify_password(
             user_login.password,
             user['password_hash']
                 ):
