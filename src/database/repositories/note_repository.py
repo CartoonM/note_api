@@ -1,8 +1,10 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, update, and_
+from loguru import logger
 
 from .base_repository import BaseRepository
+from .errors import ParametersNotSpecified
 from database.models import Notes
-from schemas import NoteInCreate
+from schemas import NoteInCreate, NoteInUpdate
 
 
 class NoteRepository(BaseRepository):
@@ -22,3 +24,21 @@ class NoteRepository(BaseRepository):
         notes = await self.database.fetch_all(
             select([Notes]).where(Notes.user_id == user_id))
         return notes
+
+    async def update_note(self, user_id: int, note: NoteInUpdate):
+        try:
+            assert note.body is not None or note.title is not None
+        except AssertionError:
+            logger.warning('Parameters for updating are not specified')
+            raise ParametersNotSpecified
+        note_update_values = note.dict()
+        del note_update_values['id']
+        keys = list(note_update_values.keys())
+        for key in keys:
+            if note_update_values[key] is None:
+                del note_update_values[key]
+        await self.database.execute(
+            update(Notes).where(
+                and_(Notes.id == note.id,
+                     Notes.user_id == user_id)).values(
+                         note_update_values))
