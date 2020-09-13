@@ -45,3 +45,10 @@ async def login(
                         value=token,
                         expires=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
                         samesite='none')
+
+
+@router.delete("/logout/")
+async def logout(
+    response: Response
+):
+    response.delete_cookie(key="access_token")
