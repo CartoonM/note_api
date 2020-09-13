@@ -33,7 +33,7 @@ class NoteRepository(BaseRepository):
             raise ParametersNotSpecified
         note_update_values = note.dict()
         del note_update_values['id']
-        keys = list(note_update_values.keys())
+        keys = tuple(note_update_values.keys())
         for key in keys:
             if note_update_values[key] is None:
                 del note_update_values[key]
