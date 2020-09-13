@@ -41,3 +41,14 @@ async def update_note(
         )
     return {"status": "ok",
             "detail": "Note updated"}
+
+
+@router.delete("/delete/")
+async def delete_note(
+    note: NoteInUpdate = Body(..., embed=True),
+    user: dict = Depends(get_current_user),
+    note_repo: NoteRepository = Depends(get_repository(NoteRepository))
+):
+    await note_repo.delete_note(user['id'], note)
+    return {"status": "ok",
+            "detail": "Note deleted"}
