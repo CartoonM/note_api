@@ -18,7 +18,7 @@ def get_application() -> FastAPI:
     application.add_event_handler("shutdown", close_db_connection(application))
 
     application.include_router(authentication.router)
-    application.include_router(notes.router)
+    application.include_router(notes.router, prefix="/notes")
 
     return application
 
