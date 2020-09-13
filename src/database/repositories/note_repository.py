@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select, update, and_
+from sqlalchemy import insert, select, update, delete, and_
 from loguru import logger
 
 from .base_repository import BaseRepository
