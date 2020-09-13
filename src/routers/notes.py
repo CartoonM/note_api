@@ -18,9 +18,26 @@ async def create_note(
     await note_repo.create_note(note, user['id'])
 
 
-@router.get("/notes/list/")
+@router.get("/list/")
 async def get_notes(
     user: dict = Depends(get_current_user),
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
 ):
     return await note_repo.get_user_notes(user['id'])
+
+
+@router.patch("/update/")
+async def update_note(
+    note: NoteInUpdate = Body(..., embed=True),
+    user: dict = Depends(get_current_user),
+    note_repo: NoteRepository = Depends(get_repository(NoteRepository))
+):
+    try:
+        await note_repo.update_note(user['id'], note)
+    except ParametersNotSpecified:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Parameters for updating are not specified"
+        )
+    return {"status": "ok",
+            "detail": "Note updated"}
