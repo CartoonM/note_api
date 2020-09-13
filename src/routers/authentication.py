@@ -14,7 +14,7 @@ from database.repositories.errors import (
 router = APIRouter()
 
 
-@router.post("/auth/register/", status_code=status.HTTP_201_CREATED)
+@router.post("/register/", status_code=status.HTTP_201_CREATED)
 async def register(
     user_create: UserInCreate = Body(..., embed=True, alias="user"),
     user_repo: UserRepository = Depends(get_repository(UserRepository)),
@@ -28,7 +28,7 @@ async def register(
         )
 
 
-@router.post("/auth/login/")
+@router.post("/login/")
 async def login(
     response: Response,
     user_login: UserInLogin = Body(..., embed=True, alias="user"),
