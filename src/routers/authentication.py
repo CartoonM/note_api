@@ -26,6 +26,7 @@ async def register(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this email or username already exist"
         )
+    return {"status": "ok"}
 
 
 @router.post("/login/")
@@ -45,6 +46,7 @@ async def login(
                         value=token,
                         expires=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
                         samesite='none')
+    return {"status": "ok"}
 
 
 @router.delete("/logout/")
@@ -52,3 +54,4 @@ async def logout(
     response: Response
 ):
     response.delete_cookie(key="access_token")
+    return {"status": "ok"}
