@@ -42,3 +42,8 @@ class NoteRepository(BaseRepository):
                 and_(Notes.id == note.id,
                      Notes.user_id == user_id)).values(
                          note_update_values))
+
+    async def delete_note(self, user_id: int, note: NoteInUpdate):
+        await self.database.execute(delete(Notes).where(
+                and_(Notes.id == note.id,
+                     Notes.user_id == user_id)))
