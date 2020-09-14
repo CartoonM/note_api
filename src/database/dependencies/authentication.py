@@ -7,12 +7,13 @@ from .errors import InvalidToken
 from database.repositories import UserRepository
 from database.repositories.errors import EntityDoesNotExist
 from services import get_email_from_token
+from schemas import UserInDb
 
 
 async def get_current_user(
     users_repo: UserRepository = Depends(get_repository(UserRepository)),
     token: Optional[str] = Cookie(None, alias='access_token')
-) -> dict:
+) -> UserInDb:
     try:
         if token is None:
             raise InvalidToken
