@@ -16,6 +16,7 @@ async def create_note(
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
 ):
     await note_repo.create_note(note, user['id'])
+    return {"status": "ok"}
 
 
 @router.get("/list/")
