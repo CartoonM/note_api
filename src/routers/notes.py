@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 
 from database.dependencies import get_current_user, get_repository
 from database.repositories import NoteRepository
