@@ -12,9 +12,9 @@ class UserInCreate(BaseModel):
     @validator('password')
     def password_length(cls, password):
         if (
-                len(password) < constants.MAX_PASSWORD_LENGTH
-                or
-                len(password) > constants.MAX_PASSWORD_LENGTH
+            len(password) < constants.MAX_PASSWORD_LENGTH
+            or
+            len(password) > constants.MAX_PASSWORD_LENGTH
                 ):
             raise ValueError("Password is too long or short")
         return password
