@@ -7,8 +7,7 @@ from database.repositories import UserRepository
 from database.repositories.errors import (
     EntityAlreadyExist,
     EntityDoesNotExist,
-    FailedCredentials,
-    ValidationError
+    FailedCredentials
 )
 
 
@@ -26,11 +25,6 @@ async def register(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this email or username already exist"
-        )
-    except ValidationError as err:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(err)
         )
 
     return {"status": "ok"}
