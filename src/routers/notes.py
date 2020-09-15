@@ -14,7 +14,7 @@ async def create_note(
     note: NoteInCreate = Body(..., embed=True),
     user: UserInDb = Depends(get_current_user),
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
-):
+) -> dict:
     await note_repo.create_note(note, user.id)
     return {"status": "ok"}
 
@@ -23,7 +23,7 @@ async def create_note(
 async def get_notes(
     user: UserInDb = Depends(get_current_user),
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
-):
+) -> list:
     return await note_repo.get_user_notes(user.id)
 
 
@@ -32,7 +32,7 @@ async def update_note(
     note: NoteInUpdate = Body(..., embed=True),
     user: UserInDb = Depends(get_current_user),
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
-):
+) -> dict:
     try:
         await note_repo.update_note(user.id, note)
     except ParametersNotSpecified:
@@ -49,7 +49,7 @@ async def delete_note(
     note: NoteInUpdate = Body(..., embed=True),
     user: UserInDb = Depends(get_current_user),
     note_repo: NoteRepository = Depends(get_repository(NoteRepository))
-):
+) -> dict:
     await note_repo.delete_note(user.id, note)
     return {"status": "ok",
             "detail": "Note deleted"}

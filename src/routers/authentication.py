@@ -19,7 +19,7 @@ router = APIRouter()
 async def register(
     user_create: UserInCreate = Body(..., embed=True, alias="user"),
     user_repo: UserRepository = Depends(get_repository(UserRepository)),
-):
+) -> dict:
     try:
         await user_repo.create_user(user_create)
     except EntityAlreadyExist:
@@ -41,7 +41,7 @@ async def login(
     response: Response,
     user_login: UserInLogin = Body(..., embed=True, alias="user"),
     user_repo: UserRepository = Depends(get_repository(UserRepository))
-):
+) -> dict:
     try:
         token = await user_repo.get_access_token(user_login)
     except(EntityDoesNotExist, FailedCredentials):
@@ -57,6 +57,6 @@ async def login(
 
 
 @router.delete("/logout/")
-async def logout(response: Response):
+async def logout(response: Response) -> dict:
     response.delete_cookie(key="access_token")
     return {"status": "ok"}

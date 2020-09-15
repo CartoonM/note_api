@@ -20,12 +20,12 @@ class NoteRepository(BaseRepository):
                 body=note_create.body,
                 user_id=user_id))
 
-    async def get_user_notes(self, user_id: int):
+    async def get_user_notes(self, user_id: int) -> list:
         notes = await self.database.fetch_all(
             select([Notes]).where(Notes.user_id == user_id))
         return notes
 
-    async def update_note(self, user_id: int, note: NoteInUpdate):
+    async def update_note(self, user_id: int, note: NoteInUpdate) -> None:
         try:
             assert note.body is not None or note.title is not None
         except AssertionError:
@@ -43,7 +43,7 @@ class NoteRepository(BaseRepository):
                      Notes.user_id == user_id)).values(
                          note_update_values))
 
-    async def delete_note(self, user_id: int, note: NoteInUpdate):
+    async def delete_note(self, user_id: int, note: NoteInUpdate) -> None:
         await self.database.execute(delete(Notes).where(
                 and_(Notes.id == note.id,
                      Notes.user_id == user_id)))
