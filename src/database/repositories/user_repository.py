@@ -3,7 +3,14 @@ from sqlalchemy import insert, select
 from pymysql.err import IntegrityError
 
 from .base_repository import BaseRepository
-from .errors import EntityAlreadyExist, EntityDoesNotExist, FailedCredentials
+from .errors import (
+    EntityAlreadyExist,
+    EntityDoesNotExist,
+    FailedCredentials,
+    ValidationError
+)
+from helpers.errors import InvalidEmail
+from helpers import check_email
 from database.models import Users
 from schemas import UserInCreate, UserInLogin, UserInDb
 from services import security, create_access_token_for_user
@@ -13,6 +20,7 @@ class UserRepository(BaseRepository):
 
     async def create_user(self, user_create: UserInCreate) -> None:
         try:
+            user_create.email = check_email(user_create.email)
             password_hash = await security.get_password_hash(
                                             user_create.password)
             await self.database.execute(
@@ -23,6 +31,8 @@ class UserRepository(BaseRepository):
         except IntegrityError:
             logger.warning('User already exist')
             raise EntityAlreadyExist
+        except InvalidEmail as err:
+            raise ValidationError(str(err))
 
     async def get_and_check_user(self, user_login: UserInLogin) -> UserInDb:
         user = await self.get_user_by_email(user_login.email)
