@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, Response, status
 
 from schemas import UserInCreate, UserInLogin
-from resources.constants import ACCESS_TOKEN_EXPIRE_MINUTES
 from database.dependencies import get_repository
 from database.repositories import UserRepository
 from database.repositories.errors import (
