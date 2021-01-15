@@ -42,10 +42,8 @@ async def login(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User does not exist or invalid credentials"
         )
-    response.set_cookie(key="access_token",
-                        value=token,
-                        expires=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
-                        samesite='none')
+
+    response.headers['auth-token'] = token
     return {"status": "ok"}
 
 
