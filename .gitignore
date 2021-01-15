@@ -3,5 +3,4 @@
 .env
 *.pyc
 
-/src/cert.pem
-/src/key.pem
+*.pem
